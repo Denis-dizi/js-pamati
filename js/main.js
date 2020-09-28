@@ -1,6 +1,9 @@
 const res = document.querySelector('#content')
 const app = document.querySelector('#app')
 const clk = document.querySelector('#clock')
+const wth = document.querySelector('#weath')
+const vid = document.querySelector('#stackvideo')
+
 
 if(content && content.length > 0){
   if(app){
@@ -46,13 +49,9 @@ function makeTime(el){
   }
 }
 
-function foo(){
-  bar()
-}
+function foo(){bar()}
 
-function bar(){
-  bazz()
-}
+function bar(){bazz()}
 
 function bazz(){
   try{
@@ -62,3 +61,37 @@ function bazz(){
     console.log(e)
   }
 }
+
+fetch('http://192.168.1.151/api/inboxweather/')
+  .then(res => res.json())
+  .then(data => h(data))
+  .catch(e => console.log(e))
+
+function h(data) {
+  console.log(data)
+  let out = ''
+  let city = ''
+  if (data.geoip && data.weather){
+    if (data.geoip.region && cities[data.geoip.region]) {
+      city = cities[data.geoip.region]
+    } else (
+      city = data.geoip.region
+    )
+    out += `<h4 class="center">${city}</h4>`
+    out += `<h5 class="center">${data.weather.currTemp || 'none'}&#8451;</h5>`
+    wth.innerHTML = out
+  }
+}
+
+function vidd(mode){
+  const vid = document.querySelector('#stackvideo')
+  console.log(vid)
+  console.log(mode)
+  if(mode == 1){
+    vid.play()
+  } else if (mode == 2){
+    vid.pause()
+  } else if (mode == 3){
+    vid.currentTime = 0
+  }
+} 
